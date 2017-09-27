@@ -81,7 +81,7 @@ node {
          sh 'npm prune'
          sh 'rm node_modules -rf'
 
-         notifySlack("Loan Broker Build: " + currentBuild.result, "#devops")
+         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.duration, "#devops")
 
          //mail body: 'project build successful',
            //          from: 'xxxx@yyyyy.com',
@@ -103,7 +103,7 @@ node {
             //subject: 'project build failed',
             //to: 'zzzz@yyyyy.com'
 
-        notifySlack(JOB_NAME + ":" + BUILD_DISPLAY_NAME + " " + currentBuild.result, "#devops")
+        notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.duration, "#devops")
 
         throw err
     }
