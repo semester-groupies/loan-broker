@@ -3,7 +3,7 @@ import groovy.json.JsonOutput
 // replace the slackURL below with the hook url provided by
 // slack when you configure the webhook
 def notifySlack(text, channel) {
-    def slackURL = 'https://hackernewsclone.slack.com/services/hooks/jenkins-ci/'
+    def slackURL = 'https://hackernewsclone.slack.com/services/hooks/jenkins-ci/pkh7Guga1ZeXgLET9c3566wR'
     def payload = JsonOutput.toJson([text      : text,
                                      channel   : channel,
                                      username  : "jenkins",
