@@ -9,19 +9,6 @@ def notifySlack(text, channel) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
-def getRepoSlug() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    org = tokens[tokens.size()-3]
-    repo = tokens[tokens.size()-2]
-    return "${org}/${repo}"
-}
-
-def getBranch() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    branch = tokens[tokens.size()-1]
-    return "${branch}"
-}
-
 node {
 
     environment {
@@ -79,14 +66,6 @@ node {
        }
 
        stage('Push to Origin/Master') {
-         sh 'echo BRANCH_NAME'
-         repo = getRepoSlug()
-         branch = getBranch()
-         sh 'echo ${repo}'
-         sh 'echo ${branch}'
-         sh 'echo {branch}'
-         sh 'echo $branch'
-         sh 'echo branch'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          //sh 'git tag -a mergeTag -m "Merging into master"'
