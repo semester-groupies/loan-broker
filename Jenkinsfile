@@ -81,15 +81,13 @@ node {
          sh 'npm prune'
          sh 'rm node_modules -rf'
 
-         currentBuild.seconds = currentBuild.duration / 1000
-         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.seconds + "sec", "#devops")
+         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.result + "ms", "#devops")
        }
 
     }
     catch (err) {
         currentBuild.result = "FAILURE"
-        currentBuild.seconds = currentBuild.duration / 1000
-        notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.seconds + "sec\n" + err, "#devops")
+        notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.result + "ms\n" + err, "#devops")
 
         throw err
     }
