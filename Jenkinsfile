@@ -66,12 +66,12 @@ node {
        }
 
        stage('Push to Origin/Master') {
-         sh 'echo ${BRANCH_NAME}'
+         sh 'echo BRANCH_NAME'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          //sh 'git tag -a mergeTag -m "Merging into master"'
          //sh 'git checkout origin/master'
-         //sh 'git merge --ff-only -v ${BRANCH_NAME}'
+         //sh 'git merge --ff-only -v BRANCH_NAME'
          //sh 'git commit -m "Merged into master'
          //sh 'git push origin master'
        }
