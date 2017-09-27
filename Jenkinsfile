@@ -69,7 +69,7 @@ node {
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          sh 'git tag -a mergeTag -m "Merging into master"'
-         sh 'git merge -ff master'
+         sh 'git merge --ff-only -v master'
          sh 'git commit -am "Merged into master'
          sh 'git push origin master'
        }
