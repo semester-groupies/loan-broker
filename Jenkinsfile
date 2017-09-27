@@ -1,7 +1,5 @@
 import groovy.json.JsonOutput
-// Add whichever params you think you'd most want to have
-// replace the slackURL below with the hook url provided by
-// slack when you configure the webhook
+
 def notifySlack(text, channel) {
     def slackURL = 'https://hackernewsclone.slack.com/services/hooks/jenkins-ci/pkh7Guga1ZeXgLET9c3566wR'
     def payload = JsonOutput.toJson([text      : text,
@@ -13,12 +11,18 @@ def notifySlack(text, channel) {
 
 node {
 
+    environment {
+        GIT_ACCESS = credentials('git-credentials')
+        /* GIT_ACCESS containing <username>:<password>
+           GIT_ACCESS_USR containing the username
+           GIT_ACCESS_PSW containing the password */
+    }
+
     currentBuild.result = "SUCCESS"
 
     try {
 
        stage('Clone Repo into Workspace'){
-       /* Let's make sure we have the repository cloned to our workspace */
           checkout scm
        }
 
@@ -34,13 +38,10 @@ node {
        }
 
        stage('Build Docker Image'){
-       /* This builds the actual image; synonymous to docker build on the command line. */
        //     sh './dockerBuild.sh'
        }
 
        stage('Test Docker Image') {
-       /* Ideally, we would run a test framework against our image.
-        * For this example, we're using a Volkswagen-type approach ;-) */
           sh 'echo "Tests passed"'
        }
 
@@ -69,6 +70,7 @@ node {
          sh 'git merge -ff master'
          sh 'git commit -am "Merged into master'
          sh 'git push origin master'
+         sh 'git push https://${GIT_ACCESS}@scm mergeTag'
        }
 
 
@@ -100,7 +102,7 @@ node {
             //subject: 'project build failed',
             //to: 'zzzz@yyyyy.com'
 
-        notifySlack("Loan Broker Build: " + currentBuild.result, "#devops")
+        notifySlack(JOB_NAME + ":" + BUILD_DISPLAY_NAME + " " + currentBuild.result, "#devops")
 
         throw err
     }
