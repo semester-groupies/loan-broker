@@ -11,7 +11,7 @@
     //sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 //}
 
-node('node') {
+node {
 
     currentBuild.result = "SUCCESS"
 
