@@ -33,4 +33,13 @@ node {
             app.push("latest")
         }
     }
+
+    //stage('Push to Repo') {
+        // credentialsId here is the credentials you have set up in Jenkins for pushing
+        // to that repository using username and password.
+      //  withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+        //    sh("git tag -a some_tag -m 'Jenkins'")
+          //  sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@<REPO> --tags')
+        //}
+    //}
 }
