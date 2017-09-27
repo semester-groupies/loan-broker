@@ -9,6 +9,19 @@ def notifySlack(text, channel) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
+def getRepoSlug() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    org = tokens[tokens.size()-3]
+    repo = tokens[tokens.size()-2]
+    return "${org}/${repo}"
+}
+
+def getBranch() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    branch = tokens[tokens.size()-1]
+    return "${branch}"
+}
+
 node {
 
     environment {
@@ -67,6 +80,10 @@ node {
 
        stage('Push to Origin/Master') {
          sh 'echo BRANCH_NAME'
+         repo = getRepoSlug()
+         branch = getBranch
+         sh 'echo ${repo}'
+         sh 'echo ${branch}'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          //sh 'git tag -a mergeTag -m "Merging into master"'
@@ -78,34 +95,19 @@ node {
 
 
        stage('Cleanup after Build Success'){
-
          echo 'prune and cleanup'
          sh 'npm prune'
          sh 'rm node_modules -rf'
 
-         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.duration, "#devops")
-
-         //mail body: 'project build successful',
-           //          from: 'xxxx@yyyyy.com',
-             //        replyTo: 'xxxx@yyyy.com',
-               //      subject: 'project build successful',
-                 //    to: 'yyyyy@yyyy.com'
+         currentBuild.seconds = currentBuild.duration / 1000
+         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.seconds + "sec", "#devops")
        }
-
-
 
     }
     catch (err) {
-
         currentBuild.result = "FAILURE"
-
-            //mail body: "project build error is here: ${env.BUILD_URL}" ,
-            //from: 'xxxx@yyyy.com',
-            //replyTo: 'yyyy@yyyy.com',
-            //subject: 'project build failed',
-            //to: 'zzzz@yyyyy.com'
-
-        notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.duration, "#devops")
+        currentBuild.seconds = currentBuild.duration / 1000
+        notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.seconds + "sec\n" + err, "#devops")
 
         throw err
     }
