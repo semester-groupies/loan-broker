@@ -65,12 +65,10 @@ node {
        }
 
        stage('Push to Origin/Master') {
-        // credentialsId here is the credentials you have set up in Jenkins for pushing
-        // to that repository using username and password.
-        //  withCredentials([usernamePassword(credentialsId: 'git-pass-credentials-ID', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-        //    sh("git tag -a some_tag -m 'Jenkins'")
-        //  sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@<REPO> --tags')
-        //}
+         sh 'git tag -a mergeTag -m "Merging into master"'
+         sh 'git merge -ff master'
+         sh 'git commit -am "Merged into master'
+         sh 'git push origin master'
        }
 
 
@@ -80,7 +78,7 @@ node {
          sh 'npm prune'
          sh 'rm node_modules -rf'
 
-         notifySlack(currentBuild.result, "#devops")
+         notifySlack("Loan Broker Build: " + currentBuild.result, "#devops")
 
          //mail body: 'project build successful',
            //          from: 'xxxx@yyyyy.com',
@@ -101,6 +99,8 @@ node {
             //replyTo: 'yyyy@yyyy.com',
             //subject: 'project build failed',
             //to: 'zzzz@yyyyy.com'
+
+        notifySlack("Loan Broker Build: " + currentBuild.result, "#devops")
 
         throw err
     }
