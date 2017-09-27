@@ -81,9 +81,12 @@ node {
        stage('Push to Origin/Master') {
          sh 'echo BRANCH_NAME'
          repo = getRepoSlug()
-         branch = getBranch
+         branch = getBranch()
          sh 'echo ${repo}'
          sh 'echo ${branch}'
+         sh 'echo {branch}'
+         sh 'echo $branch'
+         sh 'echo branch'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          //sh 'git tag -a mergeTag -m "Merging into master"'
