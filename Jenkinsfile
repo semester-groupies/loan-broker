@@ -66,7 +66,7 @@ node {
        }
 
        stage('Push to Origin/Master') {
-         echo '${env.BRANCH_NAME}'
+         echo 'env.BRANCH_NAME'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
          //sh 'git checkout origin/master'
