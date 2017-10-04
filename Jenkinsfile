@@ -30,8 +30,12 @@ node {
        stage('Test'){
        //  env.NODE_ENV = "test"
 
-         //print "Environment will be : $BRANCH_NAME"
-         print "Current Build is : ${currentBuild}"
+         print "Branch is : $BRANCH_NAME"
+         print "Branch is : ${BRANCH_NAME}"
+         print "Branch is : ${env.BRANCH_NAME}"
+         sh 'echo $BRANCH_NAME'
+         sh 'echo ${BRANCH_NAME}'
+         sh 'echo ${env.BRANCH_NAME}'
 
          //sh 'node -v'
          //sh 'npm prune'
