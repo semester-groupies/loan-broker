@@ -15,7 +15,7 @@ node {
     // pull request or feature branch
     if  (env.BRANCH_NAME != 'master') {
         checkout()
-        //build()
+        build()
         //unitTest()
         // test whether this is a regular branch build or a merged PR build
         //if (!isPRMergeBuild()) {
@@ -25,7 +25,7 @@ node {
     } // master branch / production
     else {
         checkout()
-        //build()
+        build()
         //allTests()
         //preProduction()
         //manualPromotion()
@@ -50,10 +50,9 @@ def checkout () {
 }
 
 def build () {
-    stage 'Build'
-    // cache maven artifacts
-    shareM2 '/tmp/m2repo'
-    mvn 'clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
+    stage ('Build') {
+        print "hello world"
+    }
 }
 
 
