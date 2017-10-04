@@ -1,5 +1,4 @@
-import groovy.*
-// .json.JsonOutput
+import groovy.json.JsonOutput
 
 def notifySlack(text, channel) {
     def slackURL = 'https://hackernewsclone.slack.com/services/hooks/jenkins-ci/pkh7Guga1ZeXgLET9c3566wR'
