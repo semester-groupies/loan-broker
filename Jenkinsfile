@@ -9,6 +9,12 @@ def notifySlack(text, channel) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
+def getBranch() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    branch = tokens[tokens.size()-1]
+    return "${branch}"
+}
+
 node {
 
     //environment {
@@ -29,6 +35,8 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
+          getBranch()
+          print ${branch}
          sh 'echo pulling... ' + env.BRANCH_NAME
 
          //sh 'node -v'
