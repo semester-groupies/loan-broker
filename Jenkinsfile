@@ -35,9 +35,9 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
-          getBranch()
-          print ${branch}
-         sh 'echo pulling... ' + env.BRANCH_NAME
+         print getBranch()
+
+         //sh 'echo pulling... ' + env.BRANCH_NAME
 
          //sh 'node -v'
          //sh 'npm prune'
