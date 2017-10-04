@@ -29,7 +29,10 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
-         echo 'pulling... ' + env.BRANCH_NAME
+         echo 'pulling... ' + $BRANCH_NAME
+         echo 'pulling... ' + $env.BRANCH_NAME
+         echo 'pulling... ' + ${env.BRANCH_NAME}
+         echo 'pulling... ' + ${BRANCH_NAME}
 
          //sh 'node -v'
          //sh 'npm prune'
