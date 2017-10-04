@@ -51,6 +51,9 @@ def checkout () {
 
 def build () {
     print "hello world"
+    stage ('Build') {
+        print "inside build"
+    }
 }
 
 
