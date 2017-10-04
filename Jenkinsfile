@@ -50,10 +50,12 @@ def checkout () {
 }
 
 def build () {
-    stage 'Build'
-    // cache maven artifacts
-    shareM2 '/tmp/m2repo'
-    mvn 'clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
+    stage ('Build') {
+        env.NODE_ENV = "test"
+        sh 'node -v'
+        sh 'npm prune'
+        sh 'npm install'
+    }
 }
 
 
