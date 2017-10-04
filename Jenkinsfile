@@ -15,6 +15,12 @@ def getBranch() {
     return "${branch}"
 }
 
+def get() {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    branch = tokens[tokens.size()-1]
+    return "${tokens}"
+}
+
 node {
 
     //environment {
@@ -36,10 +42,7 @@ node {
        //env.NODE_ENV = "test"
 
          //print getBranch()
-
-         echo "My branch is: ${env.BRANCH_NAME}"
-
-         //sh 'echo pulling... ' + env.BRANCH_NAME
+         print get()
 
          //sh 'node -v'
          //sh 'npm prune'
