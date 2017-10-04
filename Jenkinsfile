@@ -10,6 +10,7 @@ def notifySlack(text, channel) {
 }
 
 def getBranch() {
+    print "${env.BRANCH_NAME}"
     return "${env.BRANCH_NAME}"
 }
 
