@@ -29,7 +29,6 @@ node {
        stage('Test'){
        //  env.NODE_ENV = "test"
 
-         print "Branch is : $BRANCH_NAME"
          print "Branch is : ${BRANCH_NAME}"
          print "Branch is : ${env.BRANCH_NAME}"
          sh 'echo $BRANCH_NAME'
