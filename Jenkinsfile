@@ -27,14 +27,14 @@ node {
        }
 
        stage('Test'){
-         env.NODE_ENV = "test"
+       //  env.NODE_ENV = "test"
 
-         print "Environment will be : ${env.NODE_ENV}"
+         //print "Environment will be : ${env.NODE_ENV}"
 
-         sh 'node -v'
-         sh 'npm prune'
-         sh 'npm install'
-         sh 'npm test'
+         //sh 'node -v'
+         //sh 'npm prune'
+         //sh 'npm install'
+         //sh 'npm test'
        }
 
        stage('Build Docker Image'){
@@ -69,11 +69,12 @@ node {
          echo 'env.BRANCH_NAME'
          sh 'git config --global user.email "jenkins@jenkins.com"'
          sh 'git config --global user.name "jenkins"'
-         //sh 'git checkout origin/master'
-         //sh 'git tag -a mergeTag -m "Merging into master"'
-         //sh 'git merge --ff-only -v env.BRANCH_NAME'
-         //sh 'git commit -m "Merged into master'
-         //sh 'git push origin master'
+         sh 'git checkout origin/master'
+         sh 'git tag -a mergeTag -m "Merging into master"'
+         sh 'git merge --ff-only -v env.BRANCH_NAME'
+         sh 'git commit -m "Merged into master'
+         sh 'git push origin master'
+         sh 'git branch -d env.BRANCH_NAME'
        }
 
 
