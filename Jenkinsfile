@@ -103,6 +103,7 @@ node {
        }
 
     }
+
     catch (err) {
         currentBuild.result = "FAILURE"
         notifySlack(JOB_NAME + " - " + BUILD_DISPLAY_NAME + " " + currentBuild.result + " after " + currentBuild.duration + "ms\n" + err, "#devops")
