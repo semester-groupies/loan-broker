@@ -10,9 +10,7 @@ def notifySlack(text, channel) {
 }
 
 def getBranch() {
-    tokens = "${env.BRANCH_NAME}".tokenize('/')
-    branch = tokens[tokens.size()-1]
-    return "${tokens}"
+    return "${env.BRANCH_NAME}"
 }
 
 
