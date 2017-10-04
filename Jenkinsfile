@@ -85,20 +85,12 @@ node {
        }
 
        stage('Push to Origin/Master') {
-
-       //sh 'git tag -a tagName -m "Your tag comment"'
-       //sh 'git merge develop'
-       //sh 'git commit -am "Merged develop branch to master'
-       //sh "git push origin master"
-         //echo '$BRANCH_NAME'
-         //sh 'git config --global user.email "jenkins@jenkins.com"'
-         //sh 'git config --global user.name "jenkins"'
-         //sh 'git checkout origin/master'
-         //sh 'git tag -a mergeTag -m "Merging into master"'
-         //sh 'git merge --ff-only -v env.BRANCH_NAME'
-         //sh 'git commit -m "Merged into master'
-         //sh 'git push origin master'
-         //sh 'git branch -d env.BRANCH_NAME'
+         sh 'git config --global user.email "jenkins@jenkins.com"'
+         sh 'git config --global user.name "jenkins"'
+         sh 'git tag -a mergeTag -m "Merging into master"'
+         sh 'git merge --ff-only -v master'
+         sh 'git commit -m "Merged into master'
+         sh 'git push origin master'
        }
 
 
