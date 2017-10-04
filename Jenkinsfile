@@ -16,13 +16,6 @@ def getBranch() {
 
 node {
 
-    //environment {
-    //    GIT_ACCESS = credentials('git-credentials')
-    //    /* GIT_ACCESS containing <username>:<password>
-    //       GIT_ACCESS_USR containing the username
-    //       GIT_ACCESS_PSW containing the password */
-    //}
-
     currentBuild.result = "SUCCESS"
 
     try {
@@ -32,14 +25,11 @@ node {
        }
 
        stage('Test'){
-       //env.NODE_ENV = "test"
-
-         print getBranch()
-
-         //sh 'node -v'
-         //sh 'npm prune'
-         //sh 'npm install'
-         //sh 'npm test'
+         env.NODE_ENV = "test"
+         sh 'node -v'
+         sh 'npm prune'
+         sh 'npm install'
+         sh 'npm test'
        }
 
        stage('Build Docker Image'){
