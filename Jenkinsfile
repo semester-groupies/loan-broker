@@ -67,7 +67,7 @@ def merge() {
     stage ('Merging with master branch') {
         sh 'git remote -v'
         sh 'git fetch origin'
-        sh 'git checkout master'
+        sh 'git checkout origin/master'
     }
 }
 
