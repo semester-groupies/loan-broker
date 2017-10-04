@@ -50,9 +50,7 @@ def checkout () {
 }
 
 def build () {
-    stage ('Build') {
-        print "hello world"
-    }
+    print "hello world"
 }
 
 
