@@ -35,7 +35,9 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
-         print getBranch()
+         //print getBranch()
+
+         echo "My branch is: ${env.BRANCH_NAME}"
 
          //sh 'echo pulling... ' + env.BRANCH_NAME
 
