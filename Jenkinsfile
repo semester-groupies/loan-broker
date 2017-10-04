@@ -32,7 +32,7 @@ node {
          //print "Branch is : ${BRANCH_NAME}"
          //print "Branch is : ${env.BRANCH_NAME}"
          //sh 'echo ${env.BRANCH_NAME}'
-         sh "echo ${BRANCH_NAME}"
+         sh "echo ${env}"
 
          //sh 'node -v'
          //sh 'npm prune'
