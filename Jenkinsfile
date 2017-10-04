@@ -29,7 +29,7 @@ node {
        stage('Test'){
        //  env.NODE_ENV = "test"
 
-         print "Environment will be : ${env.NODE_ENV}"
+         print "Environment will be : ${env.BRANCH_NAME}"
 
          //sh 'node -v'
          //sh 'npm prune'
