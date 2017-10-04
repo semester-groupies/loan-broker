@@ -67,7 +67,9 @@ def merge() {
     stage ('Merging with master branch') {
         sh 'git remote -v'
         sh 'git fetch origin'
-        sh 'git rebase origin/master'
+        sh 'git merge --ff-only -v master'
+        sh 'git commit -m "Merged into master"'
+        sh 'git push origin master'
     }
 }
 
