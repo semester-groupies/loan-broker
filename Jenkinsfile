@@ -27,13 +27,10 @@ node {
        }
 
        stage('Test'){
-       //  env.NODE_ENV = "test"
+       //env.NODE_ENV = "test"
 
-         //print "Branch is : ${BRANCH_NAME}"
-         //print "Branch is : ${env.BRANCH_NAME}"
-         //sh 'echo ${env.BRANCH_NAME}'
-         sh "echo ${env}"
-
+         sh 'echo env.getEnvironment()'
+         print env.getEnvironment()
          //sh 'node -v'
          //sh 'npm prune'
          //sh 'npm install'
