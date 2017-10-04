@@ -38,7 +38,7 @@ def isPRMergeBuild() {
 }
 
 def checkout () {
-    stage ('Checkout code') {
+    stage ('Checkout code'):
         print env.BRANCH_NAME
         context="continuous-integration/jenkins/"
         context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
@@ -46,16 +46,16 @@ def checkout () {
         // setBuildStatus ("${context}", 'Checking out...', 'PENDING')
         checkout scm
         setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
-    }
+
 }
 
 def build () {
-    stage ('Build') {
+    stage ('Build'):
         env.NODE_ENV = "test"
         sh 'node -v'
         sh 'npm prune'
         sh 'npm install'
-    }
+
 }
 
 
