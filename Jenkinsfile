@@ -11,10 +11,6 @@ def notifySlack(text, channel) {
     sh "curl -X POST --data-urlencode \'payload=${payload}\' ${slackURL}"
 }
 
-def getBranch() {
-    return "${env.BRANCH_NAME}"
-}
-
 node {
     // pull request or feature branch
     if  (env.BRANCH_NAME != 'master') {
