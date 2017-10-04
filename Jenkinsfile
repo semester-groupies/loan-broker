@@ -29,7 +29,7 @@ node {
        stage('Test'){
        //  env.NODE_ENV = "test"
 
-         //print "Environment will be : ${env.NODE_ENV}"
+         print "Environment will be : ${env.NODE_ENV}"
 
          //sh 'node -v'
          //sh 'npm prune'
@@ -66,7 +66,7 @@ node {
        }
 
        stage('Push to Origin/Master') {
-         echo '$BRANCH_NAME'
+         //echo '$BRANCH_NAME'
          //sh 'git config --global user.email "jenkins@jenkins.com"'
          //sh 'git config --global user.name "jenkins"'
          //sh 'git checkout origin/master'
