@@ -29,8 +29,8 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
-         sh 'echo env.getEnvironment()'
-         print env.getEnvironment()
+         echo 'pulling... ' + env.BRANCH_NAME
+
          //sh 'node -v'
          //sh 'npm prune'
          //sh 'npm install'
@@ -66,6 +66,11 @@ node {
        }
 
        stage('Push to Origin/Master') {
+
+       //sh 'git tag -a tagName -m "Your tag comment"'
+       //sh 'git merge develop'
+       //sh 'git commit -am "Merged develop branch to master'
+       //sh "git push origin master"
          //echo '$BRANCH_NAME'
          //sh 'git config --global user.email "jenkins@jenkins.com"'
          //sh 'git config --global user.name "jenkins"'
