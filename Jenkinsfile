@@ -1,4 +1,5 @@
-import groovy.json.JsonOutput
+import groovy.*
+// .json.JsonOutput
 
 def notifySlack(text, channel) {
     def slackURL = 'https://hackernewsclone.slack.com/services/hooks/jenkins-ci/pkh7Guga1ZeXgLET9c3566wR'
@@ -29,7 +30,8 @@ node {
        stage('Test'){
        //  env.NODE_ENV = "test"
 
-         print "Environment will be : $BRANCH_NAME"
+         //print "Environment will be : $BRANCH_NAME"
+         print "Current Build is : ${currentBuild}"
 
          //sh 'node -v'
          //sh 'npm prune'
