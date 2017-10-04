@@ -65,7 +65,9 @@ def unitTest() {
 
 def merge() {
     stage ('Merging with master branch') {
-        sh 'git branch'
+        sh 'git remote -v'
+        sh 'git fetch origin'
+        sh 'git checkout master'
     }
 }
 
