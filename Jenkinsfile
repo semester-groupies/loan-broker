@@ -42,7 +42,7 @@ node {
 
 
 
-          checkout scm
+          //checkout scm
        }
 
        stage('Test'){
