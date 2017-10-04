@@ -16,19 +16,14 @@ node {
     if  (env.BRANCH_NAME != 'master') {
         checkout()
         build()
-        //unitTest()
-        // test whether this is a regular branch build or a merged PR build
-        //if (!isPRMergeBuild()) {
-            // maybe disabled for ChatOps
-            // preview()
-        //}
+        //test()
+        merge()
     } // master branch / production
     else {
         checkout()
         build()
-        //allTests()
-        //preProduction()
-        //manualPromotion()
+        //test()
+        //dockerDeploy()
         //production()
     }
 }
@@ -68,20 +63,10 @@ def unitTest() {
     }
 }
 
-def allTests() {
-    stage 'All tests'
-    // don't skip anything
-    mvn 'test -B'
-    step([$class: 'JUnitResultArchiver', testResults: '**/target/surefire-reports/TEST-*.xml'])
-    if (currentBuild.result == "UNSTABLE") {
-        // input "Unit tests are failing, proceed?"
-        sh "exit 1"
+def merge() {
+    stage ('Merging with master branch') {
+        sh 'git branch'
     }
-}
-
-def preview() {
-    herokuApp = "${env.HEROKU_PREVIEW}"
-    deployToStage("preview", herokuApp)
 }
 
 def preProduction() {
