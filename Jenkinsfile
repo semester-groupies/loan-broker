@@ -30,7 +30,6 @@ node {
        stage('Clone Repo into Workspace'){
           checkout([
           $class: 'GitSCM',
-          branches: [[name: '/fix/*']],
           doGenerateSubmoduleConfigurations: false,
           extensions: [[$class: 'LocalBranch',
           localBranch: "**"]],
