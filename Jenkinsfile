@@ -66,7 +66,7 @@ node {
          sh 'git config --global user.name "jenkins"'
          sh 'git remote -v'
          sh 'git fetch origin'
-         sh 'git checkout origin/master'
+         sh 'git checkout master'
          //sh 'git tag -a mergeTag -m "Merging into master"'
          sh 'git merge --ff-only -v ' + getBranch()
          sh 'git commit -m "Merged into master"'
