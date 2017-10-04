@@ -15,7 +15,7 @@ node {
     // pull request or feature branch
     if  (env.BRANCH_NAME != 'master') {
         checkout()
-        build()
+        //build()
         //unitTest()
         // test whether this is a regular branch build or a merged PR build
         //if (!isPRMergeBuild()) {
@@ -25,7 +25,7 @@ node {
     } // master branch / production
     else {
         checkout()
-        build()
+        //build()
         //allTests()
         //preProduction()
         //manualPromotion()
@@ -38,7 +38,7 @@ def isPRMergeBuild() {
 }
 
 def checkout () {
-    stage ('Checkout code'):
+    stage ('Checkout code') {
         print env.BRANCH_NAME
         context="continuous-integration/jenkins/"
         context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
@@ -46,16 +46,14 @@ def checkout () {
         // setBuildStatus ("${context}", 'Checking out...', 'PENDING')
         checkout scm
         setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
-
+    }
 }
 
 def build () {
-    stage ('Build'):
-        env.NODE_ENV = "test"
-        sh 'node -v'
-        sh 'npm prune'
-        sh 'npm install'
-
+    stage 'Build'
+    // cache maven artifacts
+    shareM2 '/tmp/m2repo'
+    mvn 'clean install -DskipTests=true -Dmaven.javadoc.skip=true -Dcheckstyle.skip=true -B -V'
 }
 
 
