@@ -69,6 +69,7 @@ def merge() {
         //sh 'git checkout master'
         print env.BRANCH_NAME
         sh 'ls -a'
+        sh 'git branch'
         //sh 'git merge --ff-only -v ' + env.BRANCH_NAME
         //sh 'git commit -m "Merged into master"'
         //sh 'git push origin master'
