@@ -50,9 +50,11 @@ def checkout () {
 }
 
 def build () {
-    print "hello world"
     stage ('Build') {
-        print "inside build"
+        env.NODE_ENV = "test"
+        sh 'node -v'
+        sh 'npm prune'
+        sh 'npm install'
     }
 }
 
