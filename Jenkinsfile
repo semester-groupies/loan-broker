@@ -12,12 +12,6 @@ def notifySlack(text, channel) {
 def getBranch() {
     tokens = "${env.BRANCH_NAME}".tokenize('/')
     branch = tokens[tokens.size()-1]
-    return "${branch}"
-}
-
-def get() {
-    tokens = "${env.JOB_NAME}".tokenize('/')
-    branch = tokens[tokens.size()-1]
     return "${tokens}"
 }
 
@@ -41,8 +35,7 @@ node {
        stage('Test'){
        //env.NODE_ENV = "test"
 
-         //print getBranch()
-         print get()
+         print getBranch()
 
          //sh 'node -v'
          //sh 'npm prune'
