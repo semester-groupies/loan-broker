@@ -71,7 +71,7 @@ def unitTest() {
 
 def merge() {
     stage ('Merging with master branch') {
-        sh 'git fetch origin'
+        sh 'git fetch'
         print env.BRANCH_NAME
         sh 'ls -a'
         sh 'git branch -a'
