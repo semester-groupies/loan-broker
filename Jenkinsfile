@@ -79,7 +79,7 @@ def merge() {
 
         withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh("git tag -a some_tag -m 'Jenkins'")
-            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@<REPO> --tags')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
         }
 
         //sh 'git fetch'
