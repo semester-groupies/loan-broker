@@ -36,16 +36,20 @@ def checkout () {
     stage ('Checkout code') {
         print env.BRANCH_NAME
         context="continuous-integration/jenkins/"
-        context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
+        // context += isPRMergeBuild()?"branch/checkout":"pr-merge/checkout"
         // newer versions of Jenkins do not seem to support setting custom statuses before running the checkout scm step ...
         // setBuildStatus ("${context}", 'Checking out...', 'PENDING')
-        checkout([
-                 $class: 'GitSCM',
-                 branches: scm.branches,
-                 doGenerateSubmoduleConfigurations: scm.doGenerateSubmoduleConfigurations,
-                 extensions: scm.extensions,
-                 userRemoteConfigs: scm.userRemoteConfigs
-            ])
+
+        checkout changelog: true, poll: true,
+        scm: [$class: 'GitSCM',
+        branches: [[name: 'origin/ready/**']],
+        doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
+        options: [fastForwardMode: 'FF_ONLY', mergeRemote: 'origin',
+        mergeStrategy: <object of type org.jenkinsci.plugins.gitclient.MergeCommand.Strategy>,
+        mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
+        userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
+        url: 'https://github.com/semester-groupies/loan-broker.git']]]
+
         setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
     }
 }
@@ -71,12 +75,12 @@ def unitTest() {
 
 def merge() {
     stage ('Merging with master branch') {
-        sh 'git fetch'
+        //sh 'git fetch'
         print env.BRANCH_NAME
-        sh 'git branch -a'
-        sh 'git checkout master'
-        sh 'git merge --ff-only -v ' + env.BRANCH_NAME
-        sh 'git commit -m "Merged into master"'
+        //sh 'git branch -a'
+        //sh 'git checkout master'
+        //sh 'git merge --ff-only -v ' + env.BRANCH_NAME
+        //sh 'git commit -m "Merged into master"'
         sh 'git push origin master'
     }
 }
