@@ -45,7 +45,7 @@ def checkout () {
         branches: [[name: 'origin/ready/**']],
         doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
         options: [fastForwardMode: 'FF_ONLY', mergeRemote: 'origin',
-        mergeStrategy: <object of type org.jenkinsci.plugins.gitclient.MergeCommand.Strategy>,
+        mergeStrategy: org.jenkinsci.plugins.gitclient.MergeCommand.Strategy.DEFAULT,
         mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
         url: 'https://github.com/semester-groupies/loan-broker.git']]]
