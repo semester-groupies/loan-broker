@@ -75,13 +75,19 @@ def unitTest() {
 
 def merge() {
     stage ('Merging with master branch') {
-        //sh 'git fetch'
         print env.BRANCH_NAME
+
+        withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
+            sh("git tag -a some_tag -m 'Jenkins'")
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@<REPO> --tags')
+        }
+
+        //sh 'git fetch'
         //sh 'git branch -a'
         //sh 'git checkout master'
         //sh 'git merge --ff-only -v ' + env.BRANCH_NAME
         //sh 'git commit -m "Merged into master"'
-        sh 'git push origin master'
+        //sh 'git push origin master'
     }
 }
 
