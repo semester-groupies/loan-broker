@@ -12,6 +12,11 @@ def notifySlack(text, channel) {
 }
 
 node {
+    tokens = "${env.JOB_NAME}".tokenize('/')
+    org = tokens[tokens.size()-3]
+    repo = tokens[tokens.size()-2]
+    branch = tokens[tokens.size()-1]
+
     // pull request or feature branch
     if  (env.BRANCH_NAME != 'master') {
         checkout()
@@ -82,16 +87,17 @@ def merge() {
         //    sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
         //}
 
+        sh 'git fetch master'
+        sh 'git branch -a'
+        sh 'git checkout master'
+        sh 'git merge --ff-only -v ' + env.BRANCH_NAME
+        sh 'git commit -m "Merged into master"'
+
         sshagent (credentials: ['jenkins-ssh']) {
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            sh 'git checkout origin/master'
-            sh 'git merge --ff-only -v ' + env.BRANCH_NAME
-            sh 'git commit -m "Merged into master"'
             sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
         }
 
-        //sh 'git fetch'
-        //sh 'git branch -a'
         //sh 'git push origin master'
     }
 }
