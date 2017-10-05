@@ -85,7 +85,7 @@ def merge() {
         withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             //sh 'git remote -v'
             sh 'git branch'
-            //sh 'git checkout remotes/origin/master'
+            sh 'git checkout master'
             //sh 'git commit -m "Merged into master"'
             //sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
             //sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
