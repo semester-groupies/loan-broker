@@ -91,8 +91,8 @@ def merge() {
             //sh 'git fetch'
             sh 'git branch -a'
             sh 'git checkout remotes/origin/master'
+            sh 'git commit -m "Merged into master"'
             sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
-            //sh 'git commit -m "Merged into master"'
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
         //    sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
             sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
