@@ -95,7 +95,7 @@ def merge() {
             //sh 'git commit -m "Merged into master"'
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
         //    sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
-            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
         }
     }
 }
