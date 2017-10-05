@@ -88,7 +88,7 @@ def merge() {
         //}
 
         sshagent (credentials: ['jenkins-ssh']) {
-            sh 'git fetch master'
+            sh 'git fetch'
             sh 'git branch -a'
             sh 'git checkout master'
             sh 'git merge --ff-only -v ' + env.BRANCH_NAME
