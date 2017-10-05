@@ -87,13 +87,12 @@ def merge() {
         //    sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
         //}
 
-        sh 'git fetch origin/master'
-        sh 'git branch -a'
-        sh 'git checkout master'
-        sh 'git merge --ff-only -v ' + env.BRANCH_NAME
-        sh 'git commit -m "Merged into master"'
-
         sshagent (credentials: ['jenkins-ssh']) {
+            sh 'git fetch origin/master'
+            sh 'git branch -a'
+            sh 'git checkout master'
+            sh 'git merge --ff-only -v ' + env.BRANCH_NAME
+            sh 'git commit -m "Merged into master"'
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
             sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
         }
