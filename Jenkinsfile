@@ -88,9 +88,10 @@ def merge() {
         //}
 
         sshagent (credentials: ['jenkins-ssh']) {
+            sh 'git remote -v'
             sh 'git fetch'
             sh 'git branch -a'
-            sh 'git checkout master'
+            sh 'git checkout remotes/origin/master'
             sh 'git merge --ff-only -v ' + env.BRANCH_NAME
             sh 'git commit -m "Merged into master"'
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
