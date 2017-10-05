@@ -83,14 +83,17 @@ def merge() {
         print env.BRANCH_NAME
 
         withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
-            //sh 'git remote -v'
-            sh 'git branch'
+            sh 'git remote -v'
+            //sh 'git branch'
+            sh 'git checkout -b temp'
+            sh 'git branch -f master temp'
             sh 'git checkout master'
+            sh 'git branch -d temp'
             //sh 'git commit -m "Merged into master"'
             //sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
-            //sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            //sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
-            //sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git master')
+            sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git master')
         }
     }
 }
