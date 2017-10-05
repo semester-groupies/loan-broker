@@ -84,7 +84,7 @@ def merge() {
 
         sshagent (credentials: ['jenkins-ssh']) {
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            sh 'git merge --ff-only -v master'
+            sh 'git merge --ff-only -v origin/master'
             sh 'git commit -m "Merged into master"'
             sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
         }
