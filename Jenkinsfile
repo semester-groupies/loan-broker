@@ -84,7 +84,7 @@ def merge() {
 
         sshagent (credentials: ['jenkins-ssh']) {
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            sh('git push https://{username}:{password}@github.com/semester-groupies/loan-broker.git --tags')
+            sh('git push https://favl:17And08@github.com/semester-groupies/loan-broker.git --tags')
         }
 
         //sh 'git fetch'
