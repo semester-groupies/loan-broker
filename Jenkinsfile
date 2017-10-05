@@ -82,12 +82,11 @@ def merge() {
     stage ('Merging with master branch') {
         print env.BRANCH_NAME
 
-        //withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
         //    sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-        //    sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
         //}
 
-        sshagent (credentials: ['jenkins-ssh']) {
+        //sshagent (credentials: ['jenkins-ssh']) {
+        withCredentials([usernamePassword(credentialsId: 'git-credentials', passwordVariable: 'GIT_PASSWORD', usernameVariable: 'GIT_USERNAME')]) {
             sh 'git remote -v'
             //sh 'git fetch'
             sh 'git branch -a'
@@ -95,10 +94,9 @@ def merge() {
             sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
             //sh 'git commit -m "Merged into master"'
             sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
+        //    sh('git push git@github.com:semester-groupies/loan-broker.git --tags')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@https://github.com/semester-groupies/loan-broker.git --tags')
         }
-
-        //sh 'git push origin master'
     }
 }
 
