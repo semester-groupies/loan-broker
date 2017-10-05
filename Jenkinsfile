@@ -71,14 +71,14 @@ def unitTest() {
 
 def merge() {
     stage ('Merging with master branch') {
-        sh 'git fetch -u origin'
-        //sh 'git checkout master'
+        sh 'git fetch origin'
         print env.BRANCH_NAME
         sh 'ls -a'
         sh 'git branch -a'
-        //sh 'git merge --ff-only -v ' + env.BRANCH_NAME
-        //sh 'git commit -m "Merged into master"'
-        //sh 'git push origin master'
+        sh 'git checkout master'
+        sh 'git merge --ff-only -v ' + env.BRANCH_NAME
+        sh 'git commit -m "Merged into master"'
+        sh 'git push origin master'
     }
 }
 
