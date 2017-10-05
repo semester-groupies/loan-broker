@@ -49,7 +49,7 @@ def checkout () {
         scm: [$class: 'GitSCM',
         branches: [[name: 'origin/ready/**']],
         doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
-        options: [fastForwardMode: 'FF_ONLY', mergeRemote: 'origin',
+        options: [fastForwardMode: 'NO_FF', mergeRemote: 'origin',
         mergeStrategy: "DEFAULT",
         mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
