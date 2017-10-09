@@ -88,7 +88,7 @@ def merge_and_push() {
             //sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
             //sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
             sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git master')
-            sh('git push "https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --delete ${env.BRANCH_NAME}"')
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --delete env.BRANCH_NAME')
         }
     }
 }
