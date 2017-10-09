@@ -43,14 +43,14 @@ def checkout () {
 
         checkout changelog: true, poll: true,
         scm: [$class: 'GitSCM',
-        branches: [[name: 'origin/ready/**']],
+        branches: scm.branches,
         doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
         options: [fastForwardMode: 'NO_FF', mergeRemote: 'origin',
         mergeStrategy: "DEFAULT",
         mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
         url: 'https://github.com/semester-groupies/loan-broker.git']]]
-
+        print scm
         //setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
     }
 }
@@ -83,7 +83,7 @@ def merge_and_push() {
             sh 'git branch -f master temp'
             sh 'git checkout master'
             sh 'git branch -d temp'
-            //sh 'git commit -m "Merged into master"'
+            //sh 'git commit -m "Merged with master"'
             //sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
             //sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
             //sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
