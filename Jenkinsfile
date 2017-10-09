@@ -41,16 +41,17 @@ def checkout () {
         // newer versions of Jenkins do not seem to support setting custom statuses before running the checkout scm step ...
         // setBuildStatus ("${context}", 'Checking out...', 'PENDING')
 
-        checkout changelog: true, poll: true,
-        scm: [$class: 'GitSCM',
-        branches: scm.branches,
-        doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
-        options: [fastForwardMode: 'NO_FF', mergeRemote: 'origin',
-        mergeStrategy: "DEFAULT",
-        mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
-        userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
-        url: 'https://github.com/semester-groupies/loan-broker.git']]]
-        print scm
+        checkout scm
+
+        //checkout changelog: true, poll: true,
+        //scm: [$class: 'GitSCM',
+        //branches: [[name: '*/master'], [name: 'ready/*']],
+        //doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
+        //options: [fastForwardMode: 'NO_FF', mergeRemote: 'origin',
+        //mergeStrategy: "DEFAULT", mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
+        //userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
+        //url: 'https://github.com/semester-groupies/loan-broker.git']]]
+
         //setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
     }
 }
@@ -69,6 +70,7 @@ def test() {
     stage ('Tests') {
         //sh 'npm test'
         sh 'echo "Tests passed!"'
+        print env.BRANCH_NAME
         if (currentBuild.result == "UNSTABLE") {
             sh "exit 1"
         }
@@ -83,10 +85,12 @@ def merge_and_push() {
             sh 'git branch -f master temp'
             sh 'git checkout master'
             sh 'git branch -d temp'
-            //sh 'git commit -m "Merged with master"'
-            //sh 'git merge --ff-only -v remotes/origin/' + env.BRANCH_NAME
-            //sh("git tag -a tag_$BUILD_ID -m 'Jenkins'")
-            //sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
+            //sh 'echo "1.0" >> .version-txt'
+            //sh 'git add .'
+            //sh 'git commit -m "merged with master"'
+            //sh 'git rebase remotes/origin/master'
+            sh("git tag -a tag_" + env.BRANCH_NAME + "_$BUILD_ID -m 'Jenkins'")
+            sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --tags')
             sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git master')
             sh('git push https://${GIT_USERNAME}:${GIT_PASSWORD}@github.com/semester-groupies/loan-broker.git --delete ' + env.BRANCH_NAME)
         }
