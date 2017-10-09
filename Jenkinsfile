@@ -50,7 +50,7 @@ def checkout () {
         mergeTarget: 'master']], [$class: 'CleanBeforeCheckout']], submoduleCfg: [],
         userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
         url: 'https://github.com/semester-groupies/loan-broker.git']]]
-
+        print scm
         //setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
     }
 }
