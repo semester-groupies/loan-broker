@@ -43,7 +43,7 @@ def checkout () {
 
         checkout changelog: true, poll: true,
         scm: [$class: 'GitSCM',
-        branches: [[name: 'origin/ready/**|*/master']],
+        branches: [[name: 'origin/ready/**|origin/master']],
         doGenerateSubmoduleConfigurations: false, extensions: [[$class: 'PreBuildMerge',
         options: [fastForwardMode: 'NO_FF', mergeRemote: 'origin',
         mergeStrategy: "DEFAULT",
