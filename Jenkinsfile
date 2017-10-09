@@ -51,7 +51,7 @@ def checkout () {
         userRemoteConfigs: [[credentialsId: 'git-credentials', name: 'origin',
         url: 'https://github.com/semester-groupies/loan-broker.git']]]
 
-        setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
+        //setBuildStatus ("${context}", 'Checking out completed', 'SUCCESS')
     }
 }
 
