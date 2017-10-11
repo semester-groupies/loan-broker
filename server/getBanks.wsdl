@@ -13,7 +13,7 @@
    </message>
   //message tags define data elements for each operation
    <message name="getBanksResponse">
-      <part name="banks" type="xsd:float" maxOccurs="unbounded"/>
+      <part name="banks" type="xsd:string" maxOccurs="unbounded"/>
    </message>
    //describes operations performed by a port and the messages involved
    <portType name="Hello_PortType"> 

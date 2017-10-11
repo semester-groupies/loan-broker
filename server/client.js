@@ -19,23 +19,23 @@ app.post('/getBanks', bodyParser.urlencoded({extended: false}), function (req, r
     console.log(req.body);
     var input = req.body;
     console.log(input.data.ssn);
-    console.log(input.data.creditScore);
-    console.log(input.data.loanAmount);
-    console.log(input.data.loanDuration);
+    console.log(input.data.creditscore);
+    console.log(input.data.loanamount);
+    console.log(input.data.loanduration);
     /*
     -beginning of soap body
     -url is defined to point to server.js so that soap cient can consume soap server's remote service
     -args supplied to remote service method
     */
     var url = "http://localhost:3030/getBanks?wsdl";
-    var args = {ssn: input.data.ssn, creditScore: input.data.creditScore,
-        loanAmount: input.data.loanAmount, loanDuration: input.data.loanDuration};
+    var args = {ssn: input.data.ssn, creditScore: input.data.creditscore,
+        loanAmount: input.data.loanamount, loanDuration: input.data.loanduration};
 
     soap.createClient(url, function (err, client) {
         if (err)
             console.error(err);
         else {
-            client.getListOfBanks(args, function (err, response) {
+            client.getBanks(args, function (err, response) {
                 if (err)
                     console.error(err);
                 else {
