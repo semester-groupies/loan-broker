@@ -8,11 +8,25 @@ var app = express();
 var service = {
     getBanksService : {
         BANKS_Port :{
-            getListOfBanks:function(args){
-                //let the magic happen here
-
-
-                return {banks: n};
+            getBanks:function(args){
+                var list = [];
+                var creditScore = Number(args.creditScore);
+                var loanAmount = Number(args.loanAmount);
+                    if(creditScore<100){
+                        list.push("RabbitMQ");
+                    };
+                    if(100<creditScore<400) {
+                        list.push("SoapBank");
+                        list.push("JsonBank");
+                    };
+                    if(creditScore>600) {
+                        if (loanAmount > 1000000) {
+                            list.push("ImaginarySaxoBank");
+                        } else {
+                            list.push("JsonBank")
+                        }
+                    };
+                return list;
             }
         }
     }

@@ -1,0 +1,37 @@
+<html>
+<head>
+    <script type="text/javascript">
+        function soapify() {
+            var xmlhttp = new XMLHttpRequest();
+            xmlhttp.getAllResponseHeaders();
+            xmlhttp.open('POST', 'http://127.0.0.1:3036/getBanks', true);
+            var input = '<?xml version="1.0"?>' +
+                '<data>' +
+                '<ssn>' + document.getElementById('ssn').value + '</ssn>' +
+                '<creditScore>' + document.getElementById('creditScore').value + '</creditScore>' +
+                '<loanAmount>' + document.getElementById('loanAmount').value + '</loanAmount>' +
+                '<loanDuration>' + document.getElementById('loanDuration').value + '</loanDuration>' +
+                '</data>';
+            xmlhttp.onreadystatechange = function () {
+                if (xmlhttp.readyState == 4) {
+                    if (xmlhttp.status == 200) {
+                        console.log("Data pushed\n");
+                        alert(xmlhttp.responseText)
+                    }
+                }
+            }
+            xmlhttp.setRequestHeader('Content-Type', 'text/xml');
+            xmlhttp.send(input);
+        }
+    </script>
+</head>
+<body>
+<form>
+    SSN:<input type="text" name="ssn" id="ssn"><br>
+    credit score:<input type="text" name="creditScore" id="creditScore">
+    Loan Amount:<input type="text" name="loanAmount" id="loanAmount">
+    Loan Duration:<input type="text" name="loanDuration" id="loanDuration">
+    <input type="button" value="check" onclick="soapify()"/>
+</form>
+</body>
+</html>
