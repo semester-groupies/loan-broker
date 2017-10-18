@@ -1,13 +1,57 @@
-
 <div class="container">
     <div class="row">
-        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3  col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1">
-            <form action="form" method="post" class="form-group">
-                <input type="number" name="ssn">
-                <input type="number" name="loanAmount">
-                <input type="number" name="loanDuration">
-                <input type="submit" />
+        <div class="col-lg-6 col-lg-offset-3 col-md-6 col-md-offset-3  col-sm-8 col-sm-offset-2 col-xs-10 col-xs-offset-1 form-group">
+            <form action="form" method="post">
+
+                <div class="form-group">
+                    <label>SSN</label>
+                    <br/>
+                    <div class="form-inline ">
+
+                        <div class="form-group">
+                            <input type="number" id="ssn1" minlength="6" maxlength="6" class="form-control"
+                                   name="ssn1"/>
+                        </div> -
+                        <div class="form-group">
+                        <input type="number" id="ssn2" maxlength="4" minlength="4" class="form-control" name="ssn2"/>
+                        </div>
+
+                    </div>
+                </div>
+                <div class="form-group">
+
+                    <label>Amount</label>
+                    <br/>
+                    <input type="number" id="amount" class="form-control" name="loanAmount">
+                </div>
+                <label>Duration in Days</label>
+                <br/>
+                <input type="number" class="form-control" name="loanDuration">
+                <div class="form-group"></div>
+                <input class="form-control" type="submit"/>
             </form>
         </div>
     </div>
 </div>
+<script>
+    $(document).ready(function () {
+        $("#ssn1").keyup(function () {
+            $this = $(this);
+            if ($this.val().length == 6 ) {
+                if ($this.val().length >6) {
+                    $this.val($this.val().substring(0, 6));
+                }
+                $("#ssn2").focus();
+            }
+        });
+        $("#ssn2").keyup(function () {
+            $this = $(this);
+            if ($this.val().length == 4 ) {
+                if ($this.val().length >4) {
+                    $this.val($this.val().substring(0, 4));
+                }
+                $("#amount").focus();
+            }
+        });
+    });
+</script>

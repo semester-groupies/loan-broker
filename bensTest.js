@@ -30,13 +30,17 @@ amqp.connect(url, function (err, conn) {
         ch.assertQueue(ex, {durable: true}, function (error, q) {
             var corr = generateUuid();
             // ch.bindQueue(q.queue, "logs", '');
-            ch.consume("bensGroup", function (msg) {
+            ch.assertQueue(corr);
+            ch.consume(corr, function (msg) {
                 if (msg.properties.correlationId == corr) {
                     console.log(' [.] Got %s', msg.content.toString());
+                    console.log(' [.] Got %s', JSON.stringify(msg));
                     setTimeout(function () {
                         conn.close();
                         process.exit(0)
-                    }, 500);
+                    }, 1500);
+                }else{
+                    console.log(JSON.stringify(msg))
                 }
             }, {noAck: true});
 
@@ -46,7 +50,10 @@ amqp.connect(url, function (err, conn) {
 
 
 
+            ch.publish(ex, "", new Buffer(msg), {correlationId: corr ,replyTo: corr});
+            ch.publish(ex, "", new Buffer(msg), {correlationId: "...." ,replyTo: "bensGroup"});
             ch.publish(ex, "", new Buffer(msg), {correlationId: corr ,replyTo: "bensGroup"});
+            ch.publish(ex, "", new Buffer(msg), {correlationId: "123" ,replyTo: "bensGroup"});
 
         });
         // Note: on Node 6 Buffer.from(msg) should be used
