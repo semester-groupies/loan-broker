@@ -32,7 +32,9 @@ amqp.connect(url, function (err, conn) {
         // });
 
         channel.consume(queues[1], function (message) {
+            console.log(message.content.toString())
           var reply = JSON.parse(message.content);
+          console.log("got the message");
           var parts = {
             bank: 'cphbusiness.bankJSON',
             ssn: reply.ssn,
