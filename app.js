@@ -11,7 +11,7 @@ var form = require('./routes/form');
 var getBanksService = require('./server/serverEngine');
 
 var app = express();
-// var getBanksClient = require("./server/client");
+var getBanksClient = require("./server/client");
 
 // view engine setup
 app.set('views', path.join(__dirname, 'views'));

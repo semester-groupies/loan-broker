@@ -33,7 +33,7 @@ var service = {
 };
 
 // xml data is extracted from wsdl file created
-var xml = require('fs').readFileSync('./getBanks.wsdl','utf8');
+var xml = require('fs').readFileSync('./server/getBanks.wsdl','utf8');
 var server = app.listen(3030, function() {
     var host = "127.0.0.1";
     var port = server.address().port;
