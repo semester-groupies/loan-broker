@@ -12,18 +12,18 @@ var service = {
                 var list = [];
                 var creditScore = Number(args.creditScore);
                 var loanAmount = Number(args.loanAmount);
-                    if(creditScore<100){
-                        list.push("RabbitMQ");
+                    if(creditScore < 100){
+                        list.push("Group11_translator_json");
                     };
-                    if(100<creditScore<400) {
-                        list.push("SoapBank");
-                        list.push("JsonBank");
+                    if(100 < creditScore < 400) {
+                        list.push("Group11_translator_json");
+                        list.push("Group11_translator_xml");
                     };
-                    if(creditScore>600) {
+                    if(creditScore > 400) {
                         if (loanAmount > 1000000) {
-                            list.push("ImaginarySaxoBank");
+                            list.push("Group11_translator_soap");
                         } else {
-                            list.push("JsonBank")
+                            list.push("Group11_translator_rabbit");
                         }
                     };
                 return list;
@@ -31,10 +31,11 @@ var service = {
         }
     }
 };
+
 // xml data is extracted from wsdl file created
 var xml = require('fs').readFileSync('./getBanks.wsdl','utf8');
-var server = app.listen(3030,function(){
+var server = app.listen(3030, function() {
     var host = "127.0.0.1";
     var port = server.address().port;
 });
-soap.listen(server,'/getBanks',service,xml);
+soap.listen(server, '/getBanks', service, xml);

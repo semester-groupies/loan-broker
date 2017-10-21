@@ -1,10 +1,10 @@
 'use strict';
 var amqp = require('amqplib/callback_api');
-var rabbitmq = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
-var Results = new Array();
-var agg = 'group11Aggregator';
+var url = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
+var results = new Array();
+var agg = 'Group11_queue_aggregator';
 
-amqp.connect(rabbitmq, function (err, conn) {
+amqp.connect(url, function (err, conn) {
   conn.createChannel(function (err, chan) {
     chan.assertQueue(agg, {
       durable: true
@@ -12,7 +12,9 @@ amqp.connect(rabbitmq, function (err, conn) {
 
     chan.consume(agg, function (msg) {
       var result = JSON.parse(msg.content);
-      Results.add(result);
+      console.log('result in Aggregator: ', result);
+      results.add(result);
+      console.log('all results in Aggregator: ', results);
     });
   });
 });
