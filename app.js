@@ -4,11 +4,13 @@ var favicon = require('serve-favicon');
 var logger = require('morgan');
 var cookieParser = require('cookie-parser');
 var bodyParser = require('body-parser');
-
+var recipienListener = require('./recipientlist/recipientlist');
 var index = require('./routes/index');
 var users = require('./routes/users');
 var form = require('./routes/form');
 var getBanksService = require('./server/serverEngine');
+var normalizer = require('./normalizer/normalizer');
+var transJ = require('./translator/translator-json');
 
 var app = express();
 var getBanksClient = require("./server/client");
