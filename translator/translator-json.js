@@ -6,7 +6,8 @@ amqp.connect(url, function (err, conn) {
     var q = 'Group11_translator_json';
     chnl.assertQueue(q,  { durable: false });
     chnl.consume(q,  function (msg) {
-      requestBank((JSON.parse(msg)));
+      console.log("sending to bank");
+      requestBank((JSON.parse(msg.content)));
     }, {
       noAck: true
     });
