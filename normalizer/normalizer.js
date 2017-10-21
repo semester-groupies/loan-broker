@@ -45,6 +45,34 @@ amqp.connect(url, function (err, conn) {
           noAck: true
         });
 
+        channel.consume(queues[2], function (message) {
+          var reply = JSON.parse(message.content);
+          var parts = {
+            bank: 'group11Rabbit.bankSoap',
+            ssn: reply.ssn,
+            interestRate: reply.interestRate,
+            correlationId: message.properties.correlationId
+          };
+          console.log('Sending this to aggregator: ', parts);
+          toAggregator(parts);
+        }, {
+          noAck: true
+        });
+
+        channel.consume(queues[3], function(message) {
+          var reply = JSON.parse(message.content);
+          var parts = {
+            bank: 'group11Rabbit.bankJSON',
+            ssn: reply.ssn,
+            interestRate: reply.interestRate,
+            correlationId: message.properties.correlationId
+          };
+          console.log('Sending this to aggregator: ', parts);
+          toAggregator(parts);
+        }, {
+          noAck: true
+        });
+
         function toAggregator(msg) {
           amqp.connect(url, function(err, conn){
             conn.createChannel(function(err, ch){
