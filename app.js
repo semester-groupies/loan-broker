@@ -15,6 +15,7 @@ var transX = require('./translator/translator-xml');
 var transR = require('./translator/translator-rabbitbank');
 
 var transS = require('./translator/translator-soap');
+var transR = require('./translator/translator-rabbitbank');
 var soapbank = require('./soapBank/soapBank');
 var rabbitBank = require('./rabbitBank/rabbitBank');
 var picker = require("./picker/picker");

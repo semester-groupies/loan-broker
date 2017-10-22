@@ -18,6 +18,7 @@ var service = {
                     if(100 < creditScore < 400) {
                         list.push("Group11_translator_json");
                         list.push("Group11_translator_soap");
+                        list.push("Group11_translator_rabbit");
                     };
                     if(creditScore > 400) {
                         if (loanAmount > 1000000) {
