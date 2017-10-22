@@ -1,22 +1,41 @@
-var url = 'http://207.154.205.185/calculateInterest?wsdl';
+var amqp = require('amqplib/callback_api');
+var urlQ = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
+var url = '207.154.205.185:3032/calculateInterest?wsdl';
 var js2xmlparser = require("js2xmlparser");
+var request = require('request');
+var soap = require('soap');
 
 
-amqp.connect(url, function (err, conn) {
+
+amqp.connect(urlQ, function (err, conn) {
     conn.createChannel(function (err, chnl) {
         var q = 'Group11_translator_soap';
         chnl.assertQueue(q, {durable: false});
         chnl.consume(q, function (msg) {
             console.log("sending to SOAPBank");
-            request
-                .post(
-                    {
-                        headers: {'Content-Type': 'text/xml'},
-                        url: url,
-                        body: JSON.stringify(msg)
-                    }
-                    , function (err, res, body) {
-                    });
+            var message = JSON.parse(msg.content)
+            message.ssn = message.ssn.replace('-', '');
+
+            soap.createClient(url, function (err, client) {
+                client.calculateInterest(message, function (err, res) {
+                    console.log(err)
+                });
+
+
+                //
+                //
+                //      js2xmlparser.parse("calculateInterest", message)
+                //
+                //
+                // ,
+                //
+                // function (err, res, body) {
+                //     console.log('fuck this shit');
+                //     console.log( js2xmlparser.parse("calculateInterest", message));
+                //
+                // }
+
+            });
         }, {
             noAck: true
         });
@@ -24,7 +43,6 @@ amqp.connect(url, function (err, conn) {
 });
 
 function requestBank(message, corr) {
-    message.ssn = message.ssn.replace('-', '');
 
     amqp.connect(url, function (err, conn) {
         conn.createChannel(function (err, chnl) {
