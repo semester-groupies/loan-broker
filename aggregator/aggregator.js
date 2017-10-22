@@ -1,23 +1,49 @@
 'use strict';
 var amqp = require('amqplib/callback_api');
 var url = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
-var results = new Array();
-var agg = 'Group11_queue_aggregator';
+var agg = 'pickerGroup11';
+var result = [];
+module.exports = {
+    startAggregator: function (queueName, numberOfBanks) {
 
-amqp.connect(url, function (err, conn) {
-  conn.createChannel(function (err, chan) {
-    chan.assertQueue(agg, {
-      durable: true
-    });
+        console.log(numberOfBanks);
+        amqp.connect(url, function (err, conn) {
+            conn.createChannel(function (err, chan) {
+                chan.assertQueue(queueName, {
+                    durable: false
+                });
 
-    chan.consume(agg, function (msg) {
-      var result = JSON.parse(msg.content);
-      console.log('result in Aggregator: ', result);
-      results.add(result);
-      console.log('all results in Aggregator: ', results);
-    });
-  });
-});
+                chan.consume(queueName, function (msg) {
+                    if (result.length != numberOfBanks) {
+                        result.push(JSON.parse(msg.content));
+
+                        if (result.length == numberOfBanks) {
+                            chan.sendToQueue(
+                                "pickerGroup11",
+                                new Buffer(JSON.stringify(result)),
+                                {
+                                    durable: false,
+                                    correlationId: msg.properties.correlationId
+                                })
+                        }
+                    } else {
+                        result.push(JSON.parse(msg.content));
+                        chan.sendToQueue(
+                            "pickerGroup11" ,
+                            new Buffer(JSON.stringify(result)),
+                            {
+                                durable: false,
+                                correlationId: msg.properties.correlationId
+                            })
+                    }
+
+
+                });
+            });
+        });
+
+    }
+}
 
 //now we need to send the message to the front end , and find which has the best interest rates.
 //could probably hard code the bank names into the normalizer..

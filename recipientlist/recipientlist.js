@@ -15,17 +15,7 @@ amqp.connect(url, function (err, conn) {
                 var ms = JSON.parse(msg.content);
                 delete ms['banks'];
                 Object.keys(response.banks).forEach(function (item) {
-                    if (response.banks[item] == "Group11_translator_json") {
-                        sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
-                    } else if (response.banks[item] == "Group11_translator_xml") {
-                        sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
-                    } else if (response.banks[item] == "Group11_translator_soap") {
-                        sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
-                    } else if (response.banks[item] == "Group11_translator_rabbit") {
-
-                    }
-
-
+                    sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
                 })
             }, {noAck: true});
 
@@ -33,7 +23,6 @@ amqp.connect(url, function (err, conn) {
 
 
     });
-// setTimeout(function() { conn.close(); process.exit(0) }, 500);
 });
 
 

@@ -26,7 +26,7 @@ amqp.connect(url, function (err, conn) {
                 };
 
                 console.log('Sending this to aggregator: ', parts);
-                toAggregator(parts);
+                toAggregator(parts, channel);
             });
 
 
@@ -45,25 +45,24 @@ amqp.connect(url, function (err, conn) {
                 correlationId: message.properties.correlationId
             };
             console.log('Sending this to aggregator: ', parts);
-            toAggregator(parts);
+            toAggregator(parts, channel);
         }, {
 
             noAck: true
         });
 
         channel.consume(queues[2], function (message) {
-            xmlToJSON(message.content.toString(), function (err, result) {
-                var parts = {
-                    bank: 'group11.bankSoap',
-                    ssn: result.LoanResponse.ssn[0],
-                    interestRate: result.LoanResponse.interestRate[0],
-                    correlationId: message.properties.correlationId
-                };
 
-                console.log('Sending this to aggregator: ', parts);
-                toAggregator(parts);
-            });
-
+            var reply = JSON.parse(message.content);
+            console.log('in norm :', reply);
+            var parts = {
+                bank: 'group11.bankSoap',
+                ssn: parseFloat(reply.loanResponse.ssn),
+                interestRate: parseFloat(reply.loanResponse.interestRate),
+                correlationId: message.properties.correlationId
+            };
+            console.log('Sending this to aggregator: ', parts);
+            toAggregator(parts, channel);
 
         }, {
 
@@ -79,26 +78,20 @@ amqp.connect(url, function (err, conn) {
                 correlationId: message.properties.correlationId
             };
             console.log('Sending this to aggregator: ', parts);
-            toAggregator(parts);
+            toAggregator(parts, channel);
         }, {
 
             noAck: true
         });
 
-        function toAggregator(msg) {
-            amqp.connect(url, function (err, conn) {
-                conn.createChannel(function (err, ch) {
-                    ch.assertQueue(agg, {
-                        durable: true
-                    });
-
-                    ch.sendToQueue(agg, Buffer.from(JSON.stringify(msg)));
-                });
-
-                setTimeout(function () {
-                    conn.close();
-                }, 500);
+        function toAggregator(msg, ch) {
+            ch.assertQueue(msg.correlationId, {
+                durable: false
             });
+
+            ch.sendToQueue(msg.correlationId, Buffer.from(JSON.stringify(msg)), {correlationId: msg.correlationId});
+
+
         };
     });
 });

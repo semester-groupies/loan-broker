@@ -5,6 +5,7 @@ var request = require("request");
 var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
 var xmlhttp = new XMLHttpRequest();
 var amqp = require("amqplib/callback_api");
+var aggregator = require("./../aggregator/aggregator");
 
 //Get Credit score
 var CREDIT = 'http://138.68.85.24:8080/CreditScoreService/CreditScoreService?wsdl';
@@ -19,7 +20,7 @@ router.get('/', function (req, res, next) {
 });
 
 /* Get form data from user. */
-router.post('/', (req, res, next) => {
+router.post('/result', (req, res, next) => {
     var creditScore;
     var corr = generateUuid();
     var banksList = [];
@@ -47,30 +48,36 @@ router.post('/', (req, res, next) => {
                     url: "http://127.0.0.1:3036/getBanks",
                     body: JSON.stringify(args)
                 }
-                , function (err, res, body) {
+                , function (err, resp, body) {
                     var fullMSGBody = args;
                     fullMSGBody.banks = JSON.parse(body);
-                    console.log(fullMSGBody)
+
+                    console.log("=================");
+                    console.log(body);
+                    var bankNumber = Object.keys(JSON.parse(body)).length;
+                    console.log(bankNumber);
+
+                    console.log("=================");
                     amqp.connect(url, function (err, conn) {
                         if (err) {
 
                         } else {
                             conn.createChannel(function (err, ch) {
-                                ch.assertQueue(queue,{durable:true});
-                                // ch.assertQueue(corr);
-                                // ch.consume(corr, function (msg) {
-                                //         console.log(' [.] Got %s', msg.content.toString());
-                                //         console.log(' [.] Got %s', JSON.stringify(msg));
-                                //         setTimeout(function () {
-                                //             conn.close();
-                                //             process.exit(0)
-                                //         }, 1500);
-                                // }, {noAck: true});
+                                ch.assertQueue(queue, {durable: true});
+                                ch.sendToQueue(queue, Buffer.from(JSON.stringify(fullMSGBody)), {correlationId: corr});
+                                ch.assertQueue("final" + corr, {durable: true});
+                                aggregator.startAggregator(corr, bankNumber);
+                                ch.consume("final" + corr, function (resMQ, err) {
+                                    console.log("back to frontend");
+                                    if (err)
+                                        res.render("error", {message: JSON.stringify(err)});
+                                    if (resMQ)
+                                        res.render('result', {data: JSON.parse(resMQ.content)});
+                                    else
+                                        res.render('form');
+                                }, {durable: true});
 
-
-                                ch.sendToQueue(queue,Buffer.from(JSON.stringify(fullMSGBody)), {correlationId: corr});
                             });
-
 
 
                         }
