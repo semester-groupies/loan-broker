@@ -7,14 +7,14 @@ amqp.connect(url, function (err, conn) {
     chnl.assertQueue(q,  { durable: false });
     chnl.consume(q,  function (msg) {
       console.log("sending to bank");
-      requestBank((JSON.parse(msg.content)));
+      requestBank((JSON.parse(msg.content)),msg.properties["correlationId"]);
     }, {
       noAck: true
     });
   });
 });
 
-function requestBank(message) {
+function requestBank(message,corr) {
   message.ssn = message.ssn.replace('-', '');
   amqp.connect(url, function (err, conn) {
     conn.createChannel(function (err, chnl) {
@@ -23,7 +23,7 @@ function requestBank(message) {
         durable: false
       });
       chnl.publish(exch, '', Buffer.from(JSON.stringify(message)), {
-        replyTo: 'Group11_queue_json'
+        replyTo: 'Group11_queue_json',correlationId:corr
       });
     });
   });

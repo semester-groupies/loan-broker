@@ -21,7 +21,7 @@ amqp.connect(url, function (err, conn) {
                 console.log("========================")
                 Object.keys(response.banks).forEach(function (item) {
                     if (response.banks[item] == "Group11_translator_json") {
-                        sendToTranslator(response.banks[item], ch, ms,msg.properties["correlationId"]);
+                        sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
                     } else if (response.banks[item] == "Group11_translator_xml") {
 
                     } else if (response.banks[item] == "Group11_translator_soap") {
@@ -42,7 +42,8 @@ amqp.connect(url, function (err, conn) {
 });
 
 
-function sendToTranslator(translatorName, ch, msg,corr) {
+function sendToTranslator(translatorName, ch, msg, corr) {
+    console.log(corr);
     ch.sendToQueue(translatorName,
         new Buffer(JSON.stringify(msg)),
         {durable: true, correlationId: corr})
