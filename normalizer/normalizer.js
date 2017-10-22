@@ -52,15 +52,19 @@ amqp.connect(url, function (err, conn) {
         });
 
         channel.consume(queues[2], function (message) {
-            var reply = JSON.parse(message.content);
-            var parts = {
-                bank: 'group11Rabbit.bankSoap',
-                ssn: reply.ssn,
-                interestRate: reply.interestRate,
-                correlationId: message.properties.correlationId
-            };
-            console.log('Sending this to aggregator: ', parts);
-            toAggregator(parts);
+            xmlToJSON(message.content.toString(), function (err, result) {
+                var parts = {
+                    bank: 'group11.bankSoap',
+                    ssn: result.LoanResponse.ssn[0],
+                    interestRate: result.LoanResponse.interestRate[0],
+                    correlationId: message.properties.correlationId
+                };
+
+                console.log('Sending this to aggregator: ', parts);
+                toAggregator(parts);
+            });
+
+
         }, {
 
             noAck: true

@@ -20,7 +20,7 @@ amqp.connect(url, function (err, conn) {
                     } else if (response.banks[item] == "Group11_translator_xml") {
                         sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
                     } else if (response.banks[item] == "Group11_translator_soap") {
-
+                        sendToTranslator(response.banks[item], ch, ms, msg.properties["correlationId"]);
                     } else if (response.banks[item] == "Group11_translator_rabbit") {
 
                     }
