@@ -12,6 +12,7 @@ var getBanksService = require('./server/serverEngine');
 var normalizer = require('./normalizer/normalizer');
 var transJ = require('./translator/translator-json');
 var transX = require('./translator/translator-xml');
+var transS = require('./translator/translator-soap')
 
 var app = express();
 var getBanksClient = require("./server/client");
