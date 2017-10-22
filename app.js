@@ -11,6 +11,7 @@ var form = require('./routes/form');
 var getBanksService = require('./server/serverEngine');
 var normalizer = require('./normalizer/normalizer');
 var transJ = require('./translator/translator-json');
+var transX = require('./translator/translator-xml');
 
 var app = express();
 var getBanksClient = require("./server/client");
