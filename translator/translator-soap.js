@@ -1,6 +1,6 @@
 var amqp = require('amqplib/callback_api');
 var urlQ = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
-var url = '207.154.205.185:3032/calculateInterest?wsdl';
+var url = 'http://207.154.205.185:3032/calculateInterest?wsdl';
 var js2xmlparser = require("js2xmlparser");
 var request = require('request');
 var soap = require('soap');
@@ -17,6 +17,7 @@ amqp.connect(urlQ, function (err, conn) {
             message.ssn = message.ssn.replace('-', '');
 
             soap.createClient(url, function (err, client) {
+                console.log(client);
                 client.calculateInterest(message, function (err, res) {
                     console.log(err)
                 });
