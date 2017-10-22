@@ -16,20 +16,21 @@ amqp.connect(url, function (err, conn) {
           console.log(' waiting for msg on %s : ', queue);
         });
 
-        // channel.consume(queues[0], function (message) {
-        //   parseString(message, function (err, result) {
-        //     var parts = {
-        //       bank: 'cphbusiness.bankXML',
-        //       ssn: result.LoanResponse.ssn[0],
-        //       interestRate: result.LoanResponse.interestRate[0],
-        //       correlationId: msg.properties.correlationId
-        //     };
-        //    console.log('Sending this to aggregator: ', parts);
-        //     toAggregator(parts);
-        //   });
-        // }, {
-        //   noAck: true
-        // });
+        channel.consume(queues[0], function (message) {
+          parseString(message, function (err, result) {
+            var parts = {
+              bank: 'cphbusiness.bankXML',
+              ssn: result.LoanResponse.ssn[0],
+              interestRate: result.LoanResponse.interestRate[0],
+              correlationId: msg.properties.correlationId
+            };
+            console.log('Sending this to aggregator: ', parts);
+            toAggregator(parts);
+          });
+        }, {
+
+          noAck: true
+        });
 
         channel.consume(queues[1], function (message) {
           var reply = JSON.parse(message.content);
@@ -42,6 +43,7 @@ amqp.connect(url, function (err, conn) {
           console.log('Sending this to aggregator: ', parts);
           toAggregator(parts);
         }, {
+
           noAck: true
         });
 
@@ -56,10 +58,11 @@ amqp.connect(url, function (err, conn) {
           console.log('Sending this to aggregator: ', parts);
           toAggregator(parts);
         }, {
+
           noAck: true
         });
 
-        channel.consume(queues[3], function(message) {
+        channel.consume(queues[3], function (message) {
           var reply = JSON.parse(message.content);
           var parts = {
             bank: 'group11Rabbit.bankJSON',
@@ -70,19 +73,21 @@ amqp.connect(url, function (err, conn) {
           console.log('Sending this to aggregator: ', parts);
           toAggregator(parts);
         }, {
+
           noAck: true
         });
 
         function toAggregator(msg) {
-          amqp.connect(url, function(err, conn){
-            conn.createChannel(function(err, ch){
+          amqp.connect(url, function (err, conn) {
+            conn.createChannel(function (err, ch) {
               ch.assertQueue(agg, {
                 durable: true
               });
 
               ch.sendToQueue(agg, Buffer.from(JSON.stringify(msg)));
             });
-            setTimeout(function(){
+
+            setTimeout(function () {
               console.log('----------------------------------------------');
               conn.close();
             }, 500);
