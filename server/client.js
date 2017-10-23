@@ -11,24 +11,13 @@ app.use(bodyParser.json());
 // });
 
 app.post('/getBanks', function (req, res) {
-    console.log("------------------");
-    console.log(req.body);
-    console.log("------------------");
-
     /*
     -beginning of soap body
     -url is defined to point to server.js so that soap cient can consume soap server's remote service
     -args supplied to remote service method
     */
     var url = "http://localhost:3030/getBanks?wsdl";
-    // var input = '<?xml version="1.0"?>' +
-    //     '<data>' +
-    //     '<ssn>' + req.body.ssn.toString().replace("-","") + '</ssn>' +
-    //     '<creditScore>' + req.body.creditScore.toString() + '</creditScore>' +
-    //     '<loanAmount>' + req.body.loanAmount.toString() + '</loanAmount>' +
-    //     '<loanDuration>' + req.body.loanDuration.toString() + '</loanDuration>' +
-    //     '</data>';
-    // console.log(input)
+
     soap.createClient(url, function (err, client) {
         if (err)
             console.error(err);

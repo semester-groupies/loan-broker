@@ -14,10 +14,9 @@ module.exports = {
                 });
 
                 chan.consume(queueName, function (msg) {
-                    if (result.length != numberOfBanks) {
-                        result.push(JSON.parse(msg.content));
-
-                        if (result.length == numberOfBanks) {
+                    var timedOut = false;
+                    setTimeout(function () {
+                        if (!timedOut)
                             chan.sendToQueue(
                                 "pickerGroup11",
                                 new Buffer(JSON.stringify(result)),
@@ -25,16 +24,20 @@ module.exports = {
                                     durable: false,
                                     correlationId: msg.properties.correlationId
                                 })
-                        }
-                    } else {
+                    }, 1500)
+                    if (result.length < numberOfBanks) {
                         result.push(JSON.parse(msg.content));
-                        chan.sendToQueue(
-                            "pickerGroup11" ,
-                            new Buffer(JSON.stringify(result)),
-                            {
-                                durable: false,
-                                correlationId: msg.properties.correlationId
-                            })
+
+                        if (result.length == numberOfBanks) {
+                            if (!timedOut)
+                                chan.sendToQueue(
+                                    "pickerGroup11",
+                                    new Buffer(JSON.stringify(result)),
+                                    {
+                                        durable: false,
+                                        correlationId: msg.properties.correlationId
+                                    })
+                        }
                     }
 
 

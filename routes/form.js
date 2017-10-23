@@ -2,8 +2,6 @@ var express = require('express');
 var router = express.Router();
 var soap = require('soap');
 var request = require("request");
-var XMLHttpRequest = require("xmlhttprequest").XMLHttpRequest;
-var xmlhttp = new XMLHttpRequest();
 var amqp = require("amqplib/callback_api");
 var aggregator = require("./../aggregator/aggregator");
 
@@ -20,10 +18,11 @@ router.get('/', function (req, res, next) {
 });
 
 /* Get form data from user. */
-router.post('/result', (req, res, next) => {
+router.post('/result', (req, res) => {
     var creditScore;
     var corr = generateUuid();
     var banksList = [];
+    res.setTimeout(115000);
     var ssn = req.body.ssn1 + "-" + req.body.ssn2;
     var loanAmount = req.body.loanAmount;
     var loanDuration = req.body.loanDuration;
@@ -52,12 +51,7 @@ router.post('/result', (req, res, next) => {
                     var fullMSGBody = args;
                     fullMSGBody.banks = JSON.parse(body);
 
-                    console.log("=================");
-                    console.log(body);
                     var bankNumber = Object.keys(JSON.parse(body)).length;
-                    console.log(bankNumber);
-
-                    console.log("=================");
                     amqp.connect(url, function (err, conn) {
                         if (err) {
 
@@ -69,12 +63,12 @@ router.post('/result', (req, res, next) => {
                                 aggregator.startAggregator(corr, bankNumber);
                                 ch.consume("final" + corr, function (resMQ, err) {
                                     console.log("back to frontend");
-                                    if (err)
-                                        res.render("error", {message: JSON.stringify(err)});
                                     if (resMQ)
                                         res.render('result', {data: JSON.parse(resMQ.content)});
-                                    else
-                                        res.render('form');
+                                    setTimeout(function () {
+                                        conn.close();
+                                        process.exit(0)
+                                    }, 1500);
                                 }, {durable: true});
 
                             });
