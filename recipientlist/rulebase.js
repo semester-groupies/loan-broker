@@ -5,15 +5,12 @@ var fs = require('fs'),
     path = require('path'),
     xmlReader = require('read-xml');
 
-
 var service = {
   Banks_Service: {
     Banks_Port: {
       getBanks: function (args) {
-        console.log(Date().getFullYear())
         var year = new Date().getFullYear();
-        var n = args
-        console.log('blabla');
+        var n = args;
         var allBanks = ['cphbusiness.bankJSON',
           'cphbusiness.bankXML',
           '',
@@ -30,7 +27,7 @@ var service = {
 
 var xml = fs.readFileSync(__dirname + '/rulebase.wsdl', 'utf8');
 var server = app.listen(3031, function () {
-  var host = "127.0.0.1";
+  var host = '127.0.0.1';
   var port = server.address().port;
 });
 

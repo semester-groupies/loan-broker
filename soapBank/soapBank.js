@@ -19,46 +19,44 @@ var service = {
         var year = new Date().getFullYear();
         var interestRate;
 
-          switch (true) {
-              case (creditScore <= 100):
-                  interestRate = 11.5;
+        switch (true) {
+        case (creditScore <= 100):
+          interestRate = 11.5;
 
-                  break;
-              case (creditScore > 100 && creditScore < 200):
-                  interestRate = 10.5;
+        break;
+        case (creditScore > 100 && creditScore < 200):
+          interestRate = 10.5;
 
-                  break;
-              case (creditScore >= 200 && creditScore < 300):
-                  interestRate = 9.5;
+        break;
+        case (creditScore >= 200 && creditScore < 300):
+          interestRate = 9.5;
 
-                  break;
-              case (creditScore >= 300 && creditScore < 400):
-                  interestRate = 8.5;
+        break;
+        case (creditScore >= 300 && creditScore < 400):
+          interestRate = 8.5;
 
-                  break;
-              case (creditScore >= 400 && creditScore < 500):
-                  interestRate = 7.5;
-                  break;
-              case (creditScore >= 500 && creditScore < 600):
-                  interestRate = 4.34;
+        break;
+        case (creditScore >= 400 && creditScore < 500):
+          interestRate = 7.5;
+        break;
+        case (creditScore >= 500 && creditScore < 600):
+          interestRate = 4.34;
 
-                  break;
-              case (creditScore >= 600 && creditScore < 700):
-                  interestRate = 3.45;
+        break;
+        case (creditScore >= 600 && creditScore < 700):
+          interestRate = 3.45;
 
-                  break;
-              case (creditScore >= 700 && creditScore < 800):
-                  interestRate = 1.2;
+        break;
+        case (creditScore >= 700 && creditScore < 800):
+          interestRate = 1.2;
 
-                  break;
-              case (creditScore === 800):
-                  interestRate = 0.5;
+        break;
+        case (creditScore === 800):
+          interestRate = 0.5;
 
-                  break;
+        break;
 
-          }
-
-
+      }
 
         return {
           loanResponse: {
@@ -73,9 +71,10 @@ var service = {
 // xml data is extracted from wsdl file created
 var xml = require('fs').readFileSync('./soapBank/soapBank.wsdl', 'utf8');
 var server = app.listen(3038, function () {
-  var host = "localhost";
+  var host = 'localhost';
   var port = server.address().port;
   console.log('listening on :', port);
 });
+
 +
     soap.listen(server, '/calculateInterest', service, xml);

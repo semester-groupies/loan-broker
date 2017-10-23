@@ -6,28 +6,29 @@ amqp.connect(url, function (err, conn) {
         var q = 'Group11_translator_rabbit';
         chnl.assertQueue(q,  { durable: true });
         chnl.consume(q,  function (msg) {
-            console.log("sending to rabbit");
             var result = (JSON.parse(msg.content));
-            result.ssn = parseInt(result.ssn.replace("-",""));
+            result.ssn = parseInt(result.ssn.replace('-', ''));
             result.loanAmount = parseInt(result.loanAmount);
             result.loanDuration = parseInt(result.loanDuration);
-            requestBank(result, msg.properties["correlationId"]);
-            console.log(result)
-        }, {
-            noAck: true
-        });
-    });
-});
+            requestBank(result, msg.properties['correlationId']);
+            console.log(result);
+          }, {
 
+            noAck: true
+          });
+      });
+  });
+
+//here we take the data and format it for the rabbit bank
 function requestBank(message, corr) {
-    amqp.connect(url, function (err, conn) {
-        conn.createChannel(function (err, chnl) {
-            var exch = 'group11RabbitBank.JSON1';
-            chnl.assertExchange(exch, 'fanout', {
-                durable: true
+  amqp.connect(url, function (err, conn) {
+      conn.createChannel(function (err, chnl) {
+          var exch = 'group11RabbitBank.JSON1';
+          chnl.assertExchange(exch, 'fanout', {
+              durable: true
             });
-            chnl.publish(exch, '', Buffer.from(JSON.stringify(message)), {
-                replyTo: 'Group11_queue_rabbit', correlationId:corr
+          chnl.publish(exch, '', Buffer.from(JSON.stringify(message)), {
+              replyTo: 'Group11_queue_rabbit', correlationId: corr
             });
         });
     });
