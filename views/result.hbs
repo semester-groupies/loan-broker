@@ -1,8 +1,38 @@
 <p>Best offer from : {{data.best.bank}} </p>
-<p>Best offer rate : {{data.best.interestRate}} </p>
+<p>Banks willing to give you loan : {{banksSize}} </p>
 <p>Best offer : {{data.best.bank}} </p>
-<p>Banks that made an offer : {{data.bbanks}} </p>
+<p>Banks that made an offer : {{#each data.banks}}{{bank}}, {{/each }} </p>
 
+
+<div class="container">
+    <div class="row">
+        <div class="col-lg-4 col-lg-offset-4 selectedBest" >
+            <p>The best offer matching your criteria</p>
+            <div>
+                <label>Bank</label>
+                <p>{{data.best.bank}}</p>
+            </div>
+            <div>
+                <label>Interest rate</label>
+                <p>{{data.best.interestRate}}</p>
+            </div>
+        </div>
+        {{#each data.banks}}
+            <div class="col-lg-3 notselectedBest"  >
+                <p>The best offer matching your criteria</p>
+                <div>
+                    <label>Bank</label>
+                    <p>{{bank}}</p>
+                </div>
+                <div>
+                    <label>Interest rate</label>
+                    <p>{{interestRate}}</p>
+                </div>
+            </div>
+
+        {{/each}}
+    </div>
+</div>
 <form action="/form" method="get">
     <input type="submit" value="New Request">
 </form>

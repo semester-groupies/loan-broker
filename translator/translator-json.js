@@ -4,7 +4,7 @@ var url = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
 amqp.connect(url, function (err, conn) {
   conn.createChannel(function (err, chnl) {
     var q = 'Group11_translator_json';
-    chnl.assertQueue(q,  { durable: false });
+    chnl.assertQueue(q,  { durable: true });
     chnl.consume(q,  function (msg) {
       console.log("sending to bank");
       requestBank((JSON.parse(msg.content)),msg.properties["correlationId"]);

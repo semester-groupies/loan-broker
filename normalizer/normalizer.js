@@ -8,11 +8,13 @@ var xmlToJSON = require('xml2js').parseString;
 var queues = ['Group11_queue_xml', 'Group11_queue_json', 'Group11_queue_soap', 'Group11_queue_rabbit'];
 var agg = 'Group11_queue_aggregator';
 
+console.log(queues[3]);
 amqp.connect(url, function (err, conn) {
+    console.log(err);
     conn.createChannel(function (err, channel) {
         queues.forEach(function (queue) {
             channel.assertQueue(queue, {
-                durable: false
+                durable: true
             });
         });
 
@@ -25,7 +27,7 @@ amqp.connect(url, function (err, conn) {
                     correlationId: message.properties.correlationId
                 };
 
-                console.log('Sending this to aggregator: ', parts);
+                // console.log('Sending this to aggregator: ', parts);
                 toAggregator(parts, channel);
             });
 
@@ -36,7 +38,6 @@ amqp.connect(url, function (err, conn) {
         });
 
         channel.consume(queues[1], function (message) {
-            console.log(message.content.toString());
             var reply = JSON.parse(message.content);
             var parts = {
                 bank: 'cphbusiness.bankJSON',
@@ -44,7 +45,7 @@ amqp.connect(url, function (err, conn) {
                 interestRate: reply.interestRate,
                 correlationId: message.properties.correlationId
             };
-            console.log('Sending this to aggregator: ', parts);
+            // console.log('Sending this to aggregator: ', parts);
             toAggregator(parts, channel);
         }, {
 
@@ -54,14 +55,14 @@ amqp.connect(url, function (err, conn) {
         channel.consume(queues[2], function (message) {
 
             var reply = JSON.parse(message.content);
-            console.log('in norm :', reply);
+
             var parts = {
                 bank: 'group11.bankSoap',
                 ssn: parseFloat(reply.loanResponse.ssn),
                 interestRate: parseFloat(reply.loanResponse.interestRate),
                 correlationId: message.properties.correlationId
             };
-            console.log('Sending this to aggregator: ', parts);
+            // console.log('Sending this to aggregator: ', parts);
             toAggregator(parts, channel);
 
         }, {
@@ -72,9 +73,9 @@ amqp.connect(url, function (err, conn) {
         channel.consume(queues[3], function (message) {
             var reply = JSON.parse(message.content);
             var parts = {
-                bank: 'group11Rabbit.bankJSON',
-                ssn: reply.ssn,
-                interestRate: reply.interestRate,
+                bank: 'group11Rabbit.rabbit',
+                ssn: reply.loanResponse.ssn,
+                interestRate: reply.loanResponse.interestRate,
                 correlationId: message.properties.correlationId
             };
             console.log('Sending this to aggregator: ', parts);
@@ -86,7 +87,7 @@ amqp.connect(url, function (err, conn) {
 
         function toAggregator(msg, ch) {
             ch.assertQueue(msg.correlationId, {
-                durable: false
+                durable: true
             });
 
             ch.sendToQueue(msg.correlationId, Buffer.from(JSON.stringify(msg)), {correlationId: msg.correlationId});

@@ -9,7 +9,7 @@ var soap = require('soap');
 amqp.connect(urlQ, function (err, conn) {
     conn.createChannel(function (err, chnl) {
         var q = 'Group11_translator_soap';
-        chnl.assertQueue(q, {durable: false});
+        chnl.assertQueue(q, {durable: true});
         chnl.consume(q, function (msg) {
             console.log("sending to SOAPBank");
 
@@ -19,6 +19,7 @@ amqp.connect(urlQ, function (err, conn) {
             soap.createClient(url, function (err, client) {
                 client.calculateInterest(message, function (err, res) {
                     res.loanResponse.interestRate = parseFloat(res.loanResponse.interestRate);
+                    console.log(typeof res.loanResponse.interestRate);
                     res.loanResponse.ssn = parseFloat(res.loanResponse.ssn);
                     var queue = 'Group11_queue_soap';
 

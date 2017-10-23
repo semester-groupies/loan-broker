@@ -2,42 +2,52 @@
 var amqp = require('amqplib/callback_api');
 var url = 'amqp://student:cph@datdb.cphbusiness.dk:5672';
 var agg = 'pickerGroup11';
-var result = [];
 module.exports = {
     startAggregator: function (queueName, numberOfBanks) {
-
         console.log(numberOfBanks);
         amqp.connect(url, function (err, conn) {
             conn.createChannel(function (err, chan) {
                 chan.assertQueue(queueName, {
-                    durable: false
+                    durable: true
                 });
+                var result = [];
 
                 chan.consume(queueName, function (msg) {
-                    var timedOut = false;
-                    setTimeout(function () {
-                        if (!timedOut)
+                    var exists = false;
+                    if (result.length == 0) {
+                        result.push(JSON.parse(msg.content));
+                        console.log("''''''''''''''''''''''''''''''''''''")
+                        console.log(JSON.parse(msg.content).bank);
+                        console.log("''''''''''''''''''''''''''''''''''''")
+                    } else {
+                        console.log(result.length)
+                        if (result.length >= numberOfBanks ) {
                             chan.sendToQueue(
                                 "pickerGroup11",
                                 new Buffer(JSON.stringify(result)),
                                 {
-                                    durable: false,
+                                    durable: true,
                                     correlationId: msg.properties.correlationId
                                 })
-                    }, 1500)
-                    if (result.length < numberOfBanks) {
-                        result.push(JSON.parse(msg.content));
-
-                        if (result.length == numberOfBanks) {
-                            if (!timedOut)
-                                chan.sendToQueue(
-                                    "pickerGroup11",
-                                    new Buffer(JSON.stringify(result)),
-                                    {
-                                        durable: false,
-                                        correlationId: msg.properties.correlationId
-                                    })
+                        } else {
+                            result.forEach(function (item) {
+                                if (item.bank.toString() === JSON.parse(msg.content).bank.toString()) {
+                                    exists = true;
+                                }
+                            });
+                            if (!exists) {
+                                result.push(JSON.parse(msg.content));
+                            }
                         }
+                        setTimeout(function () {
+                            chan.sendToQueue(
+                                "pickerGroup11",
+                                new Buffer(JSON.stringify(result)),
+                                {
+                                    durable: true,
+                                    correlationId: msg.properties.correlationId
+                                })
+                        }, numberOfBanks * 1000 * 1.5);
                     }
 
 

@@ -6,7 +6,7 @@ var js2xmlparser = require("js2xmlparser");
 amqp.connect(url, function (err, conn) {
     conn.createChannel(function (err, chnl) {
         var q = 'Group11_translator_xml';
-        chnl.assertQueue(q,  { durable: false });
+        chnl.assertQueue(q,  { durable: true });
         chnl.consume(q,  function (msg) {
             console.log("sending to XMLBank");
             requestBank((JSON.parse(msg.content)),msg.properties["correlationId"]);
@@ -26,7 +26,7 @@ function requestBank(message,corr) {
         conn.createChannel(function (err, chnl) {
             var exch = 'cphbusiness.bankXML';
             chnl.assertExchange(exch, 'fanout', {
-                durable: false
+                durable: true
             });
 
             var XMLMessage = js2xmlparser.parse("LoanRequest", message);

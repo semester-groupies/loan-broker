@@ -6,3 +6,17 @@ body {
 a {
   color: #00B7FF;
 }
+
+.selectedBest{
+  background-color: limegreen;
+  border-radius: 5vh;
+  padding: 40px;
+  margin: 40px;
+}
+
+.notselectedBest{
+  background-color: #e4b9b9;
+  border-radius: 5vh;
+  padding: 40px;
+  margin: 40px;
+}

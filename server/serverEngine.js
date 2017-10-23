@@ -15,7 +15,7 @@ var service = {
                     if(creditScore < 100){
                         list.push("Group11_translator_json");
                     };
-                    if(100 < creditScore < 400) {
+                    if(100 <= creditScore <= 400) {
                         list.push("Group11_translator_json");
                         list.push("Group11_translator_soap");
                         list.push("Group11_translator_rabbit");

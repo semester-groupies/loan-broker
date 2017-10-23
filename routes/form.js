@@ -48,13 +48,14 @@ router.post('/result', (req, res) => {
                     body: JSON.stringify(args)
                 }
                 , function (err, resp, body) {
+                    console.log("in the getBanks response");
                     var fullMSGBody = args;
                     fullMSGBody.banks = JSON.parse(body);
 
                     var bankNumber = Object.keys(JSON.parse(body)).length;
                     amqp.connect(url, function (err, conn) {
                         if (err) {
-
+                            console.log(err)
                         } else {
                             conn.createChannel(function (err, ch) {
                                 ch.assertQueue(queue, {durable: true});
@@ -62,13 +63,12 @@ router.post('/result', (req, res) => {
                                 ch.assertQueue("final" + corr, {durable: true});
                                 aggregator.startAggregator(corr, bankNumber);
                                 ch.consume("final" + corr, function (resMQ, err) {
-                                    console.log("back to frontend");
-                                    if (resMQ)
-                                        res.render('result', {data: JSON.parse(resMQ.content)});
-                                    setTimeout(function () {
-                                        conn.close();
-                                        process.exit(0)
-                                    }, 1500);
+                                    if (res != null)
+                                        if (resMQ) {
+                                            res.render('result', {data: JSON.parse(resMQ.content),banksSize:JSON.parse(resMQ.content).banks.length});
+                                            res = null;
+                                        }
+
                                 }, {durable: true});
 
                             });
